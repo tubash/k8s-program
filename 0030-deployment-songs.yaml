@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resources-app
+  namespace: k8s-program
+spec:
+  selector:
+    matchLabels:
+      app: resources-app-pod
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: resources-app-pod
+        owner: tubaserj
+    spec:
+      volumes:
+        - name: task-pv-storage
+          persistentVolumeClaim:
+            claimName: task-pv-claim
+      containers:
+        - name: resources-container
+#          image: localhost:5000/k8s
+          image: siarheisvila/sample-application:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: "/var/www"
+              name: task-pv-storage
+
