@@ -16,18 +16,26 @@ spec:
     spec:
       containers:
         - name: postgres-db
-          image: postgres:10.1
+          image: postgres:17.0-alpine
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5432
           env:
             - name: POSTGRES_PASSWORD
-              value: "123456"
+              valueFrom:
+                secretKeyRef:
+                  name: apps-secret
+                  key: POSTGRES_PASSWORD
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres
               subPath: songs
+            - name: postgres-initdb
+              mountPath: /docker-entrypoint-initdb.d/            
       volumes:
         - name: postgres
           persistentVolumeClaim:
             claimName: pods-content
+        - name: postgres-initdb
+          configMap:
+            name: postgres-initdb-config

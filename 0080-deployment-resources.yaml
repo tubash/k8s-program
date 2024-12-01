@@ -8,6 +8,8 @@ spec:
     matchLabels:
       app: resources-app-pod
   replicas: 2
+  strategy:
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -22,21 +24,50 @@ spec:
             - containerPort: 8080
           env:
             - name: RESOURCES_MS_NAME
-              value: "resources-ms"
+              valueFrom:
+                configMapKeyRef:
+                  name: apps-config
+                  key: RESOURCES_MS_NAME
             - name: RESOURCES_MS_PORT
-              value: "8080"
+              valueFrom:
+                configMapKeyRef:
+                  name: apps-config
+                  key: RESOURCES_MS_PORT
             - name: SONGS_MS_URL
-              value: "songs-app"
+              valueFrom:
+                configMapKeyRef:
+                  name: apps-config
+                  key: SONGS_MS_URL
             - name: SONGS_MS_PORT
-              value: "8081"
+              valueFrom:
+                configMapKeyRef:
+                  name: apps-config
+                  key: SONGS_MS_PORT
             - name: RESOURCES_DB_URL
-              value: "postgres-service"
+              valueFrom:
+                configMapKeyRef:
+                  name: apps-config
+                  key: DB_URL
             - name: RESOURCES_DB_PORT
-              value: "5432"
+              valueFrom:
+                configMapKeyRef:
+                  name: apps-config
+                  key: DB_PORT
             - name: SPRING_DATASOURCE_PASSWORD
-              value: "123456"
+              valueFrom:
+                secretKeyRef:
+                  name: apps-secret
+                  key: POSTGRES_PASSWORD
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              valueFrom:
+                configMapKeyRef:
+                  name: apps-config
+                  key: SPRING_JPA_HIBERNATE_DDL_AUTO
             - name: EUREKA_CLIENT_ENABLED
-              value: "false"
+              valueFrom:
+                configMapKeyRef:
+                  name: apps-config
+                  key: EUREKA_CLIENT_ENABLED
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness

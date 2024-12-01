@@ -8,6 +8,8 @@ spec:
     matchLabels:
       app: songs-app-pod
   replicas: 2
+  strategy:
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -22,17 +24,40 @@ spec:
             - containerPort: 8081
           env:
             - name: SONGS_MS_NAME
-              value: "songs-ms"
+              valueFrom:
+                configMapKeyRef:
+                  name: apps-config
+                  key: SONGS_MS_NAME
             - name: SONGS_MS_PORT
-              value: "8081"
+              valueFrom:
+                configMapKeyRef:
+                  name: apps-config
+                  key: SONGS_MS_PORT
             - name: SONGS_DB_URL
-              value: "postgres-service"
+              valueFrom:
+                configMapKeyRef:
+                  name: apps-config
+                  key: DB_URL
             - name: SONGS_DB_PORT
-              value: "5432"
+              valueFrom:
+                configMapKeyRef:
+                  name: apps-config
+                  key: DB_PORT
             - name: SPRING_DATASOURCE_PASSWORD
-              value: "123456"
+              valueFrom:
+                secretKeyRef:
+                  name: apps-secret
+                  key: POSTGRES_PASSWORD
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              valueFrom:
+                configMapKeyRef:
+                  name: apps-config
+                  key: SPRING_JPA_HIBERNATE_DDL_AUTO
             - name: EUREKA_CLIENT_ENABLED
-              value: "false"
+              valueFrom:
+                configMapKeyRef:
+                  name: apps-config
+                  key: EUREKA_CLIENT_ENABLED
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apps-config
+  namespace: k8s
+data:
+  SPRING_JPA_HIBERNATE_DDL_AUTO: "validate"
+  EUREKA_CLIENT_ENABLED: "false"
+  SONGS_MS_URL: "songs-app"
+  SONGS_MS_NAME: "songs-ms"
+  SONGS_MS_PORT: "8081"
+  DB_URL: "postgres-service"
+  DB_PORT: "5432"
+  RESOURCES_MS_NAME: "resources-ms"
+  RESOURCES_MS_PORT: "8080"
