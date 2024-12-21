@@ -1,44 +1,53 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: songs-app
-  namespace: k8s
+  name: resources-app
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
     matchLabels:
-      app: songs-app-pod
-  replicas: 2
+      app: resources-app-pod
+  replicas: {{ .Values.resourcesApp.replicaCount }}
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: songs-app-pod
-        owner: tubaserj
+        {{- include "resourcesApp.labels" . | nindent 8 }}
     spec:
       containers:
-        - name: songs-container
-          image: registry.digitalocean.com/stradarium-registry/songs-app:latest
-          imagePullPolicy: Always
+        - name: resources-container
+          image: "{{ .Values.resourcesApp.image.repository }}:{{ .Values.resourcesApp.image.tag }}"
+          imagePullPolicy: {{ .Values.resourcesApp.pullPolicy }}
           ports:
-            - containerPort: 8081
+            - containerPort: 8080
           env:
-            - name: SONGS_MS_NAME
+            - name: RESOURCES_MS_NAME
               valueFrom:
                 configMapKeyRef:
                   name: apps-config
-                  key: SONGS_MS_NAME
+                  key: RESOURCES_MS_NAME
+            - name: RESOURCES_MS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: apps-config
+                  key: RESOURCES_MS_PORT
+            - name: SONGS_MS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: apps-config
+                  key: SONGS_MS_URL
             - name: SONGS_MS_PORT
               valueFrom:
                 configMapKeyRef:
                   name: apps-config
                   key: SONGS_MS_PORT
-            - name: SONGS_DB_URL
+            - name: RESOURCES_DB_URL
               valueFrom:
                 configMapKeyRef:
                   name: apps-config
                   key: DB_URL
-            - name: SONGS_DB_PORT
+            - name: RESOURCES_DB_PORT
               valueFrom:
                 configMapKeyRef:
                   name: apps-config
@@ -61,7 +70,7 @@ spec:
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: 8081
+              port: 8080
               scheme: HTTP
             timeoutSeconds: 1
             periodSeconds: 10
@@ -71,7 +80,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
-              port: 8081
+              port: 8080
               scheme: HTTP
             timeoutSeconds: 1
             periodSeconds: 10

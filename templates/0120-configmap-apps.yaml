@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: apps-config
-  namespace: k8s
+  namespace: {{ .Values.namespace }}
 data:
   SPRING_JPA_HIBERNATE_DDL_AUTO: "validate"
   EUREKA_CLIENT_ENABLED: "false"

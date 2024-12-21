@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postgres-db
-  namespace: k8s
+  namespace: {{ .Values.namespace }}
 spec:
   serviceName: postgres-service
   replicas: 1

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres-initdb-config
-  namespace: k8s
+  namespace: {{ .Values.namespace }}
 data:
   init.sql: |
     create table resources (id serial not null, blob bytea, primary key (id));
