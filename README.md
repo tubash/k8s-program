@@ -25,7 +25,15 @@
 - В файле с именованными шаблонами динамически создаются блоки с заголовками (labels) для Deployments, а также подтягиваются значения из .Values в качестве labels для ConfigMap (0120-configmap-apps.yaml)
 - Файлы для Helm [здесь](https://github.com/tubash/k8s-program/tree/homework3)
 
-##### Вопросы
+#### Домашнее задание #4
+
+- Добавил зависимость – `nginx-ingress`
+- Добавил правила адресации, например:
+  - http://188.166.133.64/api/v1/songs/actuator/health/readiness/ откроет соответствующий адрес сервиса песен
+  - http://188.166.133.64/api/v1/resources/actuator/health/readiness/ откроет соответствующий адрес сервиса ресурсов
+- Файлы для Helm [здесь](https://github.com/tubash/k8s-program/tree/homework4)
+
+#### Вопросы
 
 - Есть ли пример каких-то других кейсов, как в жизни используются именованые шаблоны (`_helpers.tpl`), кроме примеров с labels?
 - Не до конца понимаю, когда мы выполняем установку helm chart, например: `helm install first-release .`, чем является `first-release` и есть ли какие-то соглашения по неймингу?
