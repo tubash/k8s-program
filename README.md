@@ -3,5 +3,10 @@
 #### Домашнее задание #3
 
 - Новый namespace – helm
-- Не до конца понял задачу, которая сформулирована так: "Make a config-map use values as labels from helm \_helpers.tpl file". Требуется пояснение
-- Файлы для кубернетис [здесь](https://github.com/tubash/k8s-program/tree/homework3)
+- В файле с именованными шаблонами динамически создаются блоки с заголовками (labels) для Deployments, а также подтягиваются значения из .Values в качестве labels для ConfigMap (0120-configmap-apps.yaml)
+- Файлы для Helm [здесь](https://github.com/tubash/k8s-program/tree/homework3)
+
+#### Вопросы
+
+- Есть ли пример каких-то других кейсов, как в жизни используются именованые шаблоны, кроме примеров с labels?
+- Не до конца понимаю, когда мы выполняем установку helm chart, например: `helm install first-release .`, чем является `first-release` и есть ли какие-то соглашения по неймингу?
