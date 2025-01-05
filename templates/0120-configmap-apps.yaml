@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: apps-config
   namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "configMap.labels" . | nindent 4 }}
 data:
   SPRING_JPA_HIBERNATE_DDL_AUTO: "validate"
   EUREKA_CLIENT_ENABLED: "false"

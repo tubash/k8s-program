@@ -4,6 +4,12 @@
 
 namespace: helm
 
+configMap:
+  labels:
+    label1: label1Value
+    label2: label2Value
+    label3: label3Value
+
 songsApp:
   # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
   replicaCount: 2

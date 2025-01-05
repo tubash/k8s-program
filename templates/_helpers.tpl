@@ -2,8 +2,8 @@
 Common labels for songsApp
 */}}
 {{- define "songsApp.labels" -}}
-app.chart.deployDate: {{ dateInZone "2006-01-02" (now) "UTC" | quote }}
-app.chart.version: {{ .Chart.AppVersion | quote }}
+deployDate: {{ dateInZone "2006-01-02" (now) "UTC" | quote }}
+chartVersion: {{ .Chart.AppVersion | quote }}
 app: {{ .Values.songsApp.label }}
 {{- end }}
 
@@ -11,7 +11,18 @@ app: {{ .Values.songsApp.label }}
 Common labels for resourcesApp
 */}}
 {{- define "resourcesApp.labels" -}}
+deployDate: {{ now | htmlDate | quote }}
+chartVersion: {{ .Chart.AppVersion | quote }}
+app: {{ .Values.resourcesApp.label }}`
+{{- end }}
+
+{{/*
+Common labels for ConfigMap
+*/}}
+{{- define "configMap.labels" -}}
 deployDate: {{ dateInZone "2006-01-02" (now) "UTC" | quote  }}
 chartVersion: {{ .Chart.AppVersion | quote }}
-app: {{ .Values.resourcesApp.label }}
+{{- range $key, $val := .Values.configMap.labels }}
+{{ $key }}: {{ $val | quote }}
+{{- end }}
 {{- end }}
